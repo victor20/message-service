@@ -22,12 +22,12 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-5. Kör applikationen. I rootmappen kör: 
+5. Starta applikationen. I rootmappen kör: 
 ```
 python run.py
 ```
 
-Kör tester. I rootmappen kör: 
+Kör tester (när run.py inte kör). I rootmappen kör: 
 ```
 pytest
 ```
