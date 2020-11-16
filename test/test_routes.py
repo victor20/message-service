@@ -184,6 +184,28 @@ def test_4(client):
     messages = rv.json['messages']
     assert 0 == len(messages)
 
+    # Add messages
+    j = {"receiver": "Victor", "message_text": "Hej Victor"}
+    rv = client.post('/api/users/Carl/messages', json=j)
+    j = {"receiver": "Victor", "message_text": "Hej Victor"}
+    rv = client.post('/api/users/Carl/messages', json=j)
+    j = {"receiver": "Victor", "message_text": "Hej Victor"}
+    rv = client.post('/api/users/Carl/messages', json=j)
+    j = {"receiver": "Victor", "message_text": "Hej Victor"}
+    rv = client.post('/api/users/Carl/messages', json=j)
+
+    # Get messages
+    rv = client.get('/api/users/Victor/messages/received?from=1&to=6')
+    assert 200 == rv.status_code
+    messages = rv.json['messages']
+    assert 5 == len(messages)
+
+    # Test new with read messages
+    rv = client.get('/api/users/Victor/messages/received/new')
+    assert 200 == rv.status_code
+    messages = rv.json['messages']
+    assert 1 == len(messages)
+
 def test_5(client):
 
     # Add users
