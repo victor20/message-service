@@ -1,6 +1,6 @@
-### Message Service
+# Message Service
 
-### Hur man kör applikationen:
+## Hur man kör applikationen:
 
 1. Klona repot
 ```
@@ -32,7 +32,7 @@ Kör tester. I rootmappen kör:
 pytest
 ```
 
-### Hur man använder applikationen:
+## Hur man använder applikationen:
 
 1. För att kunna skicka meddelanden måste man först lägga till användare.
 ```
@@ -84,7 +84,7 @@ curl --location --request DELETE 'localhost:5000/api/users/Victor10/messages' \
 }'
 ```
 
-### Övriga anrop
+## Övriga anrop
 1. Hämta alla användare i databasen
 ```
 curl --location --request GET 'localhost:5000/api/users'
