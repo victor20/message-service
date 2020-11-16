@@ -34,7 +34,7 @@ pytest
 
 ### Hur man använder applikationen:
 
-1. För att kunna skicka meddelanden måste man först lägga till användare
+1. För att kunna skicka meddelanden måste man först lägga till användare.
 ```
 curl --location --request POST 'localhost:5000/api/users' \
 --header 'Content-Type: application/json' \
@@ -55,7 +55,7 @@ curl --location --request POST 'localhost:5000/api/users' \
 }'
 ```
 
-2. Skicka ett meddelande från Carl20 till Victor10
+2. Skicka ett meddelande från Carl20 till Victor10.
 ```
 curl --location --request POST 'localhost:5000/api/users/Carl20/messages' \
 --header 'Content-Type: application/json' \
@@ -75,7 +75,7 @@ curl --location --request GET 'localhost:5000/api/users/Victor10/messages/receiv
 curl --location --request GET 'localhost:5000/api/users/Victor10/messages/received?from=1&to=3'
 ```
 
-5. Radera meddelanden. Användaren kan radera meddelande som denna har mottagit genom att skicka en lista med meddelande-id. För att radera meddelande 1 och 10 skickar man
+5. Radera meddelanden. Användaren kan radera meddelande som denna har mottagit genom att skicka en lista med meddelande-id. För att radera meddelande 1 och 10 skickar man:
 ```
 curl --location --request DELETE 'localhost:5000/api/users/Victor10/messages' \
 --header 'Content-Type: application/json' \

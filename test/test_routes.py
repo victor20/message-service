@@ -19,7 +19,7 @@ def test_1(client):
     j = {"user_name": "Erik", "first_name": "Erik", "last_name": "Pregen"}
     rv = client.post('/api/users', json=j)
     assert 201 == rv.status_code
-    assert b'{}\n' == rv.data
+    assert b'{"message":"User successfully created"}\n' == rv.data
 
     # Username already in use
     rv = client.post('/api/users', json=j)
@@ -57,7 +57,7 @@ def test_2(client):
     j = {"receiver": "Victor", "message_text": "Hej Victor"}
     rv = client.post('/api/users/Carl/messages', json=j)
     assert 201 == rv.status_code
-    assert b'{}\n' == rv.data
+    assert b'{"message":"Message successfully sent"}\n' == rv.data
 
     # Wrong url/sender
     j = {"receiver": "Victor", "message_text": "Hej Victor"}

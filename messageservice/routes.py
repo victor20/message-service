@@ -18,7 +18,7 @@ def add_user():
     user.import_data(request.json)
     db.session.add(user)
     db.session.commit()
-    return jsonify({}), 201
+    return jsonify({"message": "User successfully created"}), 201
 
 
 @blueprint.route("/api/users", methods=['GET'])
@@ -40,7 +40,7 @@ def add_message(user_name: str):
     message.import_data(request.json)
     db.session.add(message)
     db.session.commit()
-    return jsonify({}), 201
+    return jsonify({"message": "Message successfully sent"}), 201
 
 
 @blueprint.route("/api/messages", methods=['GET'])
