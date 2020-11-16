@@ -60,7 +60,7 @@ curl --location --request POST 'localhost:5000/api/users' \
 curl --location --request POST 'localhost:5000/api/users/Carl10/messages' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "receiver": "Fredrik20",
+    "receiver": "Victor10",
     "message_text": "Hej"
 }'
 ```
