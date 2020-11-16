@@ -17,7 +17,13 @@ def add_user():
     user = User()
     user.import_data(request.json)
     db.session.add(user)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
+
     return jsonify({"message": "User successfully created"}), 201
 
 
@@ -39,7 +45,13 @@ def add_message(user_name: str):
     message = Message(sender=user, receiver=receiver)
     message.import_data(request.json)
     db.session.add(message)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
+
     return jsonify({"message": "Message successfully sent"}), 201
 
 
