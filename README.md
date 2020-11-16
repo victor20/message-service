@@ -2,7 +2,7 @@
 
 ## Hur man kör applikationen:
 
-1. Klona repot
+1. Klona repot:
 ```
 git clone https://github.com/victor20/message-service.git
 ```
@@ -17,17 +17,17 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-4. Installera requirements. I rootmappen kör: 
+4. Installera requirements. I root-mappen kör: 
 ```
 pip3 install -r requirements.txt
 ```
 
-5. Starta applikationen. I rootmappen kör: 
+5. Starta applikationen. I root-mappen kör: 
 ```
 python run.py
 ```
 
-Kör tester (när run.py inte kör). I rootmappen kör: 
+Kör tester (när run.py inte kör). I root-mappen kör: 
 ```
 pytest
 ```
