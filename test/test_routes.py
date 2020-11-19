@@ -24,7 +24,7 @@ def test_1(client):
     # Username already in use
     rv = client.post('/api/users', json=j)
     assert 409 == rv.status_code
-    assert b'Error username already in use' in rv.data
+    assert b'Username already in use' in rv.data
 
     # Missing data
     j = {"first_name": "Erik", "last_name": "Pregen"}
@@ -40,6 +40,7 @@ def test_1(client):
     assert "Erik" == users[0]['user_name']
     assert "Erik" == users[0]['first_name']
     assert "Pregen" == users[0]['last_name']
+
 
 def test_2(client):
 
@@ -85,6 +86,7 @@ def test_2(client):
     assert "Carl" == messages[1]['sender']
     assert "Victor" == messages[1]['receiver']
     assert "Hej Victor" == messages[1]['message_text']
+
 
 def test_3(client):
 
@@ -146,9 +148,10 @@ def test_3(client):
     assert 200 == rv.status_code
     messages = rv.json['messages']
     assert 3 == len(messages)
-    assert "Carl" == messages[0]['sender']
+    assert "Douglas" == messages[0]['sender']
     assert "Victor" == messages[0]['receiver']
     assert "Hej Victor" == messages[0]['message_text']
+
 
 def test_4(client):
 
@@ -161,7 +164,7 @@ def test_4(client):
     # Add messages
     j = {"receiver": "Victor", "message_text": "Hej Victor"}
     rv = client.post('/api/users/Carl/messages', json=j)
-    j = {"receiver": "Victor", "message_text": "Hej Victor"}
+    j = {"receiver": "Victor", "message_text": "xxxx"}
     rv = client.post('/api/users/Carl/messages', json=j)
 
     # Wrong user
@@ -176,7 +179,7 @@ def test_4(client):
     assert 2 == len(messages)
     assert "Carl" == messages[0]['sender']
     assert "Victor" == messages[0]['receiver']
-    assert "Hej Victor" == messages[0]['message_text']
+    assert "xxxx" == messages[0]['message_text']
 
     # Test new with read messages
     rv = client.get('/api/users/Victor/messages/received/new')
@@ -191,11 +194,11 @@ def test_4(client):
     rv = client.post('/api/users/Carl/messages', json=j)
     j = {"receiver": "Victor", "message_text": "Hej Victor"}
     rv = client.post('/api/users/Carl/messages', json=j)
-    j = {"receiver": "Victor", "message_text": "Hej Victor"}
+    j = {"receiver": "Victor", "message_text": "xxxx"}
     rv = client.post('/api/users/Carl/messages', json=j)
 
     # Get messages
-    rv = client.get('/api/users/Victor/messages/received?from=1&to=6')
+    rv = client.get('/api/users/Victor/messages/received?from=2&to=7')
     assert 200 == rv.status_code
     messages = rv.json['messages']
     assert 5 == len(messages)
@@ -205,6 +208,8 @@ def test_4(client):
     assert 200 == rv.status_code
     messages = rv.json['messages']
     assert 1 == len(messages)
+    assert "xxxx" == messages[0]['message_text']
+
 
 def test_5(client):
 

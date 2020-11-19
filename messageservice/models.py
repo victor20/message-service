@@ -3,6 +3,7 @@ from messageservice import db
 
 
 class User(db.Model):
+    __table_args__ = {'sqlite_autoincrement': True}
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(40), unique=True, nullable=False)
     first_name = db.Column(db.String(40), nullable=False)
@@ -37,6 +38,7 @@ class User(db.Model):
 
 
 class Message(db.Model):
+    __table_args__ = {'sqlite_autoincrement': True}
     id = db.Column(db.Integer, primary_key=True)
     message_text = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)

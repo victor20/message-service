@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify, abort
 from marshmallow import ValidationError
+from sqlalchemy import desc
+
 from messageservice import db
 from messageservice.models import Message, User
 from messageservice.validate import validate_user, validate_message, validate_index, validate_delete_list
@@ -11,7 +13,7 @@ blueprint = Blueprint('api', __name__)
 def add_user():
     validate_user(request.json)
     if User.query.filter_by(user_name=request.json['user_name']).first():
-        abort(409, "Error username already in use")
+        abort(409, "Username already in use")
     user = User()
     user.import_data(request.json)
     db.session.add(user)
@@ -42,8 +44,7 @@ def add_message(user_name: str):
 @blueprint.route("/api/messages", methods=['GET'])
 def get_messages():
     messages = [message.export_data() for message in Message.query.all()]
-    return jsonify(
-        {'messages': messages})
+    return jsonify({'messages': messages})
 
 
 @blueprint.route("/api/users/<string:user_name>/messages/received", methods=['GET'])
@@ -52,9 +53,10 @@ def get_messages_by_index(user_name):
     from_index = request.args.get('from')
     to_index = request.args.get('to')
     validate_index({'from_index': from_index, 'to_index': to_index})
-    messages = [message.export_data() for message in user.received_messages[int(from_index)-1:int(to_index)-1]]
+    query_result = Message.query.filter(Message.receiver == user).order_by(desc(Message.id)).all()[int(from_index)-1:int(to_index)-1]
+    messages = [message.export_data() for message in query_result]
     if messages:
-        user.add_latest_message_id(messages[-1]['id'])
+        user.add_latest_message_id(messages[0]['id'])
         db.session.commit()
     return jsonify({'messages': messages})
 
@@ -62,10 +64,10 @@ def get_messages_by_index(user_name):
 @blueprint.route("/api/users/<string:user_name>/messages/received/new", methods=['GET'])
 def get_new_messages(user_name):
     user = get_user_or_404(user_name)
-    messages = [message.export_data() for message in
-                Message.query.filter(Message.receiver==user, Message.id > user.latest_message_id).all()]
+    query_result = Message.query.filter(Message.receiver == user, Message.id > user.latest_message_id).order_by(desc(Message.id)).all()
+    messages = [message.export_data() for message in query_result]
     if messages:
-        user.add_latest_message_id(messages[-1]['id'])
+        user.add_latest_message_id(messages[0]['id'])
         db.session.commit()
     return jsonify({'messages': messages})
 
