@@ -70,17 +70,33 @@ curl --location --request POST 'localhost:5000/api/users/Carl20/messages' \
 curl --location --request GET 'localhost:5000/api/users/Victor10/messages/received/new'
 ```
 
-4. Hämta tidsordnade meddelanden från ett start och stop index. Indexen är ordnings-index för en specifik användare (inte databas index) Meddelande nummer 1 är det första meddelandet som användaren mottagit sen registrering. För att hämta meddelande 1 till 3 körs:
+4. Hämta tidsordnade meddelanden från ett start och stop index. Indexen är ordnings-index för en specifik användare (inte databas index) Meddelande nummer 1 är det senaste meddelandet som användaren mottagit. För att hämta Victor10s mottagna meddelanden från 1 till 3 körs:
 ```
 curl --location --request GET 'localhost:5000/api/users/Victor10/messages/received?from=1&to=3'
 ```
 
-5. Radera meddelanden. Användaren kan radera meddelande som denna har mottagit genom att skicka en lista med meddelande-id. För att radera meddelande 1 och 10 skickar man:
+För att hämta Carl20s skickade tidsordnade meddelanden från 1 till 3 körs:
+
 ```
-curl --location --request DELETE 'localhost:5000/api/users/Victor10/messages' \
+curl --location --request GET 'localhost:5000/api/users/Carl20/messages/sent?from=1&to=3'
+```
+
+5. Radera meddelanden. Användaren kan radera meddelanden som denna har mottagit eller skickat genom att skicka en lista med meddelande-id. För att radera Victor10s mottagna meddelande med id 1 körs:
+```
+curl --location --request DELETE 'localhost:5000/api/users/Victor10/messages/received' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "messages": [1, 10]
+}'
+```
+
+Vill man istället radera Carl20s skickade meddelande med id 1 körs:
+
+```
+curl --location --request DELETE 'localhost:5000/api/users/Carl20/messages/sent' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "messages": [1]
 }'
 ```
 
@@ -92,4 +108,3 @@ curl --location --request GET 'localhost:5000/api/users'
 2. Hämta alla meddelanden i databasen
 ```
 curl --location --request GET 'localhost:5000/api/messages'
-```
