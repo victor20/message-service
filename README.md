@@ -101,10 +101,10 @@ curl --location --request DELETE 'localhost:5000/api/users/Carl20/messages/sent'
 ```
 
 ## Övriga anrop
-1. Hämta alla användare i databasen
+1. Hämta alla användare i databasen.
 ```
 curl --location --request GET 'localhost:5000/api/users'
 ```
-2. Hämta alla meddelanden i databasen
+2. Hämta alla meddelanden i databasen.
 ```
 curl --location --request GET 'localhost:5000/api/messages'
