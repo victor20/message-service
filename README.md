@@ -81,7 +81,7 @@ För att hämta Carl20s skickade tidsordnade meddelanden från 1 till 3 körs:
 curl --location --request GET 'localhost:5000/api/users/Carl20/messages/sent?from=1&to=3'
 ```
 
-5. Radera meddelanden. Användaren kan radera meddelanden som denna har mottagit eller skickat genom att skicka en lista med meddelande-id. För att radera Victor10s mottagna meddelande med id 1 körs:
+5. Radera meddelanden. Användaren kan radera meddelanden som denna har mottagit eller skickat genom att skicka en lista med meddelande-id. Raderade meddelanden tas inte bort från databasen utan flagas som borttagna för avsändaren eller mottagaren. För att radera Victor10s mottagna meddelande med id 1 körs:
 ```
 curl --location --request DELETE 'localhost:5000/api/users/Victor10/messages/received' \
 --header 'Content-Type: application/json' \
