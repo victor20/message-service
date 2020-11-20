@@ -86,7 +86,7 @@ curl --location --request GET 'localhost:5000/api/users/Carl20/messages/sent?fro
 curl --location --request DELETE 'localhost:5000/api/users/Victor10/messages/received' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "messages": [1, 10]
+    "message_ids": [1]
 }'
 ```
 
@@ -96,7 +96,7 @@ Vill man istället radera Carl20s skickade meddelande med id 1 körs:
 curl --location --request DELETE 'localhost:5000/api/users/Carl20/messages/sent' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "messages": [1]
+    "message_ids": [1]
 }'
 ```
 

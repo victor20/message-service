@@ -48,7 +48,7 @@ class IndexSchema(Schema):
 
 
 class DeleteListSchema(Schema):
-    messages = fields.List(fields.Integer(), required=True)
+    message_ids = fields.List(fields.Integer(), required=True)
 
 
 

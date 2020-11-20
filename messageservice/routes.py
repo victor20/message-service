@@ -78,7 +78,10 @@ def delete_messages(user_name, sent_received):
     user = get_user_or_404(user_name)
     query_parameters = sent_received_or_404(sent_received)
     validate_delete_list(request.json)
-    Message.query.filter(query_parameters[0] == user, query_parameters[1] == False, Message.id.in_(request.json['messages'])).update({query_parameters[1]: True}, synchronize_session=False)
+    message_ids = request.json['message_ids']
+    for message_id in message_ids:
+        if Message.query.filter(query_parameters[0] == user, query_parameters[1] == False, Message.id == message_id).update({query_parameters[1]: True}) == 0:
+            raise ValidationError("Message id: " + str(message_id) + " not found")
     db.session.commit()
     return jsonify({}), 204
 

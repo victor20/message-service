@@ -250,27 +250,53 @@ def test_5(client):
     assert b'User not found' in rv.data
 
     # Non integer
-    j = {"messages": [1, 'xxx', 2]}
+    j = {"message_ids": [1, 'xxx', 2]}
     rv = client.delete('/api/users/Victor/messages/received', json=j)
     assert 400 == rv.status_code
     assert b'Not a valid integer.' in rv.data
 
-    # Delete recived messages
-    j = {"messages": [1, 2]}
+    # Delete received messages
+    j = {"message_ids": [1, 2]}
     rv = client.delete('/api/users/Victor/messages/received', json=j)
-    assert 204 == rv.status_code
+    assert 400 == rv.status_code
+    assert b'Message id: 2 not found' in rv.data
 
     # Get user messages
     rv = client.get('/api/users/Victor/messages/received?from=1&to=5')
     assert 200 == rv.status_code
     messages = rv.json['messages']
-    assert 2 == len(messages)
-    assert "Carl" == messages[1]['sender']
-    assert "Victor" == messages[1]['receiver']
-    assert "Hej Victor" == messages[1]['message_text']
+    assert 3 == len(messages)
+
+    # Delete received messages
+    j = {"message_ids": [1, 3]}
+    rv = client.delete('/api/users/Carl/messages/received', json=j)
+    assert 400 == rv.status_code
+    assert b'Message id: 1 not found' in rv.data
+
+    # Get user messages
+    rv = client.get('/api/users/Carl/messages/received?from=1&to=5')
+    assert 200 == rv.status_code
+    messages = rv.json['messages']
+    assert 1 == len(messages)
+
+    # Get user messages
+    rv = client.get('/api/users/Victor/messages/received?from=1&to=5')
+    assert 200 == rv.status_code
+    messages = rv.json['messages']
+    assert 3 == len(messages)
+
+    # Delete received messages
+    j = {"message_ids": [1, 3]}
+    rv = client.delete('/api/users/Victor/messages/received', json=j)
+    assert 204 == rv.status_code
+
+    rv = client.get('/api/users/Victor/messages/received?from=1&to=5')
+    assert 200 == rv.status_code
+    messages = rv.json['messages']
+    assert 1 == len(messages)
 
     # Delete sent messages
-    j = {"messages": [3]}
+    j = {"message_ids": [3]}
     rv = client.delete('/api/users/Carl/messages/sent', json=j)
     assert 204 == rv.status_code
 
@@ -282,3 +308,21 @@ def test_5(client):
     assert "Carl" == messages[0]['sender']
     assert "Victor" == messages[0]['receiver']
     assert "Hej Victor" == messages[0]['message_text']
+
+    """
+
+    # Delete sent messages
+    j = {"message_ids": [3]}
+    rv = client.delete('/api/users/Carl/messages/sent', json=j)
+    assert 204 == rv.status_code
+
+    # Get user messages
+    rv = client.get('/api/users/Carl/messages/sent?from=1&to=5')
+    assert 200 == rv.status_code
+    messages = rv.json['messages']
+    assert 1 == len(messages)
+    assert "Carl" == messages[0]['sender']
+    assert "Victor" == messages[0]['receiver']
+    assert "Hej Victor" == messages[0]['message_text']
+    
+    """
