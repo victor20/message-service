@@ -50,7 +50,7 @@ def get_messages():
 @blueprint.route("/api/users/<string:user_name>/messages/<string:sent_received>", methods=['GET'])
 def get_user_messages(user_name, sent_received):
     user = get_user_or_404(user_name)
-    query_parameters = user_receiver_or_404(sent_received)
+    query_parameters = sent_received_or_404(sent_received)
     from_index = request.args.get('from')
     to_index = request.args.get('to')
     validate_index({'from_index': from_index, 'to_index': to_index})
@@ -76,7 +76,7 @@ def get_new_messages(user_name):
 @blueprint.route("/api/users/<string:user_name>/messages/<string:sent_received>", methods=['DELETE'])
 def delete_messages(user_name, sent_received):
     user = get_user_or_404(user_name)
-    query_parameters = user_receiver_or_404(sent_received)
+    query_parameters = sent_received_or_404(sent_received)
     validate_delete_list(request.json)
     Message.query.filter(query_parameters[0] == user, query_parameters[1] == False, Message.id.in_(request.json['messages'])).update({query_parameters[1]: True}, synchronize_session=False)
     db.session.commit()
@@ -87,7 +87,7 @@ def get_user_or_404(user_name):
     return User.query.filter_by(user_name=user_name).first_or_404(description="User not found")
 
 
-def user_receiver_or_404(sent_received):
+def sent_received_or_404(sent_received):
     query_parameters = []
     if sent_received == "sent":
         query_parameters.append(Message.sender)
