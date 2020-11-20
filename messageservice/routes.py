@@ -47,13 +47,14 @@ def get_messages():
     return jsonify({'messages': messages})
 
 
-@blueprint.route("/api/users/<string:user_name>/messages/received", methods=['GET'])
-def get_messages_by_index(user_name):
+@blueprint.route("/api/users/<string:user_name>/messages/<string:sent_received>", methods=['GET'])
+def get_user_messages(user_name, sent_received):
     user = get_user_or_404(user_name)
+    query_parameters = user_receiver_or_404(sent_received)
     from_index = request.args.get('from')
     to_index = request.args.get('to')
     validate_index({'from_index': from_index, 'to_index': to_index})
-    query_result = Message.query.filter(Message.receiver == user).order_by(desc(Message.id)).all()[int(from_index)-1:int(to_index)-1]
+    query_result = Message.query.filter(query_parameters[0] == user, query_parameters[1] == False).order_by(desc(Message.id)).all()[int(from_index)-1:int(to_index)-1]
     messages = [message.export_data() for message in query_result]
     if messages:
         user.add_latest_message_id(messages[0]['id'])
@@ -72,17 +73,32 @@ def get_new_messages(user_name):
     return jsonify({'messages': messages})
 
 
-@blueprint.route("/api/users/<string:user_name>/messages", methods=['DELETE'])
-def delete_messages(user_name):
+@blueprint.route("/api/users/<string:user_name>/messages/<string:sent_received>", methods=['DELETE'])
+def delete_messages(user_name, sent_received):
     user = get_user_or_404(user_name)
+    query_parameters = user_receiver_or_404(sent_received)
     validate_delete_list(request.json)
-    Message.query.filter(Message.receiver==user, Message.id.in_(request.json['messages'])).delete(synchronize_session=False)
+    Message.query.filter(query_parameters[0] == user, query_parameters[1] == False, Message.id.in_(request.json['messages'])).update({query_parameters[1]: True}, synchronize_session=False)
     db.session.commit()
     return jsonify({}), 204
 
 
 def get_user_or_404(user_name):
     return User.query.filter_by(user_name=user_name).first_or_404(description="User not found")
+
+
+def user_receiver_or_404(sent_received):
+    query_parameters = []
+    if sent_received == "sent":
+        query_parameters.append(Message.sender)
+        query_parameters.append(Message.sender_deleted)
+    elif sent_received == "received":
+        query_parameters.append(Message.receiver)
+        query_parameters.append(Message.receiver_deleted)
+    else:
+        abort(404)
+    return query_parameters
+
 
 
 

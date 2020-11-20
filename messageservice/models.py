@@ -42,6 +42,8 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message_text = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    sender_deleted = db.Column(db.Boolean, nullable=False, default=False)
+    receiver_deleted = db.Column(db.Boolean, nullable=False, default=False)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
