@@ -308,21 +308,3 @@ def test_5(client):
     assert "Carl" == messages[0]['sender']
     assert "Victor" == messages[0]['receiver']
     assert "Hej Victor" == messages[0]['message_text']
-
-    """
-
-    # Delete sent messages
-    j = {"message_ids": [3]}
-    rv = client.delete('/api/users/Carl/messages/sent', json=j)
-    assert 204 == rv.status_code
-
-    # Get user messages
-    rv = client.get('/api/users/Carl/messages/sent?from=1&to=5')
-    assert 200 == rv.status_code
-    messages = rv.json['messages']
-    assert 1 == len(messages)
-    assert "Carl" == messages[0]['sender']
-    assert "Victor" == messages[0]['receiver']
-    assert "Hej Victor" == messages[0]['message_text']
-    
-    """
