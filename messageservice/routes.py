@@ -6,6 +6,7 @@ from messageservice import db
 from messageservice.models import Message, User
 from messageservice.validate import validate_user, validate_message, validate_index, validate_delete_list
 
+
 blueprint = Blueprint('api', __name__)
 
 
