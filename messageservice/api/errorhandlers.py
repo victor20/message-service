@@ -1,7 +1,29 @@
 from flask import Blueprint, jsonify
 from marshmallow import ValidationError
+from messageservice.service.errors import UsernameAlreadyExists, UserNotFound, SentReceivedError
 
 blueprint = Blueprint('errors_handlers', __name__)
+
+@blueprint.app_errorhandler(UserNotFound)
+def user_not_found(e):
+    response = jsonify({'status': 404, 'error': 'not found',
+                        'message': e.args[0]})
+    response.status_code = 404
+    return response
+
+@blueprint.app_errorhandler(SentReceivedError)
+def user_not_found(e):
+    response = jsonify({'status': 404, 'error': 'not found',
+                        'message': e.args[0]})
+    response.status_code = 404
+    return response
+
+@blueprint.app_errorhandler(UsernameAlreadyExists)
+def user_name_exists(e):
+    response = jsonify({'status': 409, 'error': 'bad request',
+                        'message': e.args[0]})
+    response.status_code = 409
+    return response
 
 @blueprint.app_errorhandler(ValidationError)
 def bad_request(e):
@@ -40,7 +62,6 @@ def conflict(e):
 
 @blueprint.app_errorhandler(500)
 def internal_server_error(e):
-    response = jsonify({'status': 500, 'error': 'internal server error',
-                        'message': e.args[0]})
+    response = jsonify({'status': 500, 'error': 'internal server error'})
     response.status_code = 500
     return response

@@ -8,8 +8,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 db = SQLAlchemy(app)
 
-from messageservice.routes import blueprint
-app.register_blueprint(routes.blueprint)
+from messageservice.api.routes import blueprint
+app.register_blueprint(blueprint)
 
-from messageservice.errors import blueprint
-app.register_blueprint(errors.blueprint)
+from messageservice.api.errorhandlers import blueprint
+app.register_blueprint(blueprint)

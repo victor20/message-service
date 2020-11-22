@@ -114,7 +114,7 @@ def test_3(client):
     # Wrong url 2
     rv = client.get('/api/users/Victor/messages/xxxx?from=1&to=2')
     assert 404 == rv.status_code
-    assert b'The requested URL was not found on the server.' in rv.data
+    assert b'Specify sent or received' in rv.data
 
     # Wrong index 1
     rv = client.get('/api/users/Victor/messages/received?from=0&to=2')
