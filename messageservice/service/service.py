@@ -1,6 +1,6 @@
 from messageservice import db
 from sqlalchemy import desc
-from messageservice.service.models import User, Message
+from messageservice.model.models import User, Message
 from messageservice.service.errors import UsernameAlreadyExists, UserNotFound, SentReceivedError
 from messageservice.service.validate import validate_user, validate_message, validate_index, validate_delete_list
 from marshmallow import ValidationError
@@ -45,7 +45,7 @@ class Service:
     def get_user_messages(user_name, sent_received, from_index, to_index):
         user = Service.get_current_user(user_name)
         query_parameters = Service.sent_received_or_error(sent_received)
-        validate_index({'from_index': from_index, 'to_index': to_index})
+        validate_index(from_index, to_index)
         query_result = Message.query.filter(query_parameters[0] == user, query_parameters[1] == False).order_by(
             desc(Message.id)).all()[int(from_index) - 1:int(to_index) - 1]
         messages = [message.export_data() for message in query_result]

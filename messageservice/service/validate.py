@@ -14,8 +14,8 @@ def validate_message(data):
         raise ValidationError(errors)
 
 
-def validate_index(data):
-    errors = IndexSchema().validate(data)
+def validate_index(from_index, to_index):
+    errors = IndexSchema().validate({'from_index': from_index, 'to_index': to_index})
     if errors:
         raise ValidationError(errors)
 
