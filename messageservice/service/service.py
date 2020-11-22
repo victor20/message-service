@@ -56,7 +56,7 @@ class Service:
 
     @staticmethod
     def get_new_messages(user_name):
-        """Retrieves all messages that have been added to the DB after the most recent retrieved message"""
+        """Retrieves all messages that have been added to the DB after the most recent received message"""
         user = Service.get_current_user(user_name)
         query_result = Message.query.filter(Message.receiver == user, Message.id > user.latest_message_id).order_by(
             desc(Message.id)).all()
