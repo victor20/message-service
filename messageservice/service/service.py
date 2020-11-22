@@ -56,6 +56,7 @@ class Service:
 
     @staticmethod
     def get_new_messages(user_name):
+        """Retrieves all messages that have been added to the DB after the most recent retrieved message"""
         user = Service.get_current_user(user_name)
         query_result = Message.query.filter(Message.receiver == user, Message.id > user.latest_message_id).order_by(
             desc(Message.id)).all()
@@ -67,6 +68,8 @@ class Service:
 
     @staticmethod
     def delete_messages(user_name, sent_received, message_ids_dict):
+        """Deletes a list of a users received or sent messages by flagging them as either 'sender_deleted' or
+        'receiver_deleted' in DB"""
         user = Service.get_current_user(user_name)
         if not user:
             raise UserNotFound("User not found")
