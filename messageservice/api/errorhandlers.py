@@ -7,14 +7,14 @@ blueprint = Blueprint('errors_handlers', __name__)
 @blueprint.app_errorhandler(UserNotFound)
 def user_not_found(e):
     response = jsonify({'status': 404, 'error': 'not found',
-                        'message': e.args[0]})
+                        'message': 'The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.'})
     response.status_code = 404
     return response
 
 @blueprint.app_errorhandler(SentReceivedError)
 def user_not_found(e):
     response = jsonify({'status': 404, 'error': 'not found',
-                        'message': e.args[0]})
+                        'message': 'The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.'})
     response.status_code = 404
     return response
 

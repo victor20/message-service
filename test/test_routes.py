@@ -64,7 +64,6 @@ def test_2(client):
     j = {"receiver": "Victor", "message_text": "Hej Victor"}
     rv = client.post('/api/users/xxxx/messages', json=j)
     assert 404 == rv.status_code
-    assert b'User not found' in rv.data
 
     # Wrong reciver
     j = {"receiver": "xxxx", "message_text": "Hej Fredrik"}
@@ -109,12 +108,10 @@ def test_3(client):
     # Wrong url 1
     rv = client.get('/api/users/xxxx/messages/received?from=1&to=2')
     assert 404 == rv.status_code
-    assert b'User not found' in rv.data
 
     # Wrong url 2
     rv = client.get('/api/users/Victor/messages/xxxx?from=1&to=2')
     assert 404 == rv.status_code
-    assert b'Specify sent or received' in rv.data
 
     # Wrong index 1
     rv = client.get('/api/users/Victor/messages/received?from=0&to=2')
@@ -183,7 +180,6 @@ def test_4(client):
     # Wrong user
     rv = client.get('/api/users/xxxx/messages/received/new')
     assert 404 == rv.status_code
-    assert b'User not found' in rv.data
 
     # Test new with unread messages
     rv = client.get('/api/users/Victor/messages/received/new')
@@ -247,7 +243,6 @@ def test_5(client):
     # Wrong user
     rv = client.delete('/api/users/xxxx/messages/received')
     assert 404 == rv.status_code
-    assert b'User not found' in rv.data
 
     # Non integer
     j = {"message_ids": [1, 'xxx', 2]}

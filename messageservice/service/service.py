@@ -82,7 +82,7 @@ class Service:
     def get_current_user(user_name):
         user = User.query.filter_by(user_name=user_name).first()
         if not user:
-            raise UserNotFound("User not found")
+            raise UserNotFound()
         return user
 
     @staticmethod
@@ -95,5 +95,5 @@ class Service:
             query_parameters.append(Message.receiver)
             query_parameters.append(Message.receiver_deleted)
         else:
-            raise SentReceivedError("Specify sent or received")
+            raise SentReceivedError()
         return query_parameters

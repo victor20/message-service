@@ -108,3 +108,4 @@ curl --location --request GET 'localhost:5000/api/users'
 2. Hämta alla meddelanden i databasen.
 ```
 curl --location --request GET 'localhost:5000/api/messages'
+```
